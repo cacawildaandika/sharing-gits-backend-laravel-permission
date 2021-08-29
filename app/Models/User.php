@@ -52,6 +52,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property-read Collection|\Laravel\Passport\Client[] $clients
+ * @property-read int|null $clients_count
  */
 class User extends Authenticatable
 {
