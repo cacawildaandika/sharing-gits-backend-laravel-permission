@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\BasicResponse;
 use Auth;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -15,7 +16,16 @@ class AuthController extends Controller
         $this->basicResponse = new BasicResponse();
     }
 
-    public function login(Request $request)
+    public function user(): JsonResponse
+    {
+        return $this->basicResponse
+            ->setStatusCode(200)
+            ->setMessage('Success get user')
+            ->setData(Auth::user())
+            ->send();
+    }
+
+    public function login(Request $request): JsonResponse
     {
         $credentials = $request->only(['email', 'password']);
 
