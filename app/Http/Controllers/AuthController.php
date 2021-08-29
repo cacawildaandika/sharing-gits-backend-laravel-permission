@@ -42,6 +42,9 @@ class AuthController extends Controller
                 ])->send();
         }
 
-        return 'false';
+        return $this->basicResponse
+            ->setStatusCode(401)
+            ->setMessage('Email or password not match')
+            ->send();
     }
 }
