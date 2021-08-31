@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Helpers\BasicResponse;
 use App\Models\Article;
 use Auth;
@@ -80,10 +81,7 @@ class ArticleController extends Controller
             return $article;
         }
 
-        return $this->basicResponse
-            ->setStatusCode(404)
-            ->setMessage('Article not found')
-            ->send();
+        throw new NotFoundException('Article not found');
     }
 
     /**
