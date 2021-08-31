@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\BasicResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -36,6 +37,14 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
+            $response = new BasicResponse();
+            return $response
+                ->setStatusCode(403)
+                ->setMessage('You are not allowed to access this resource')
+                ->send();
         });
     }
 }
