@@ -37,6 +37,13 @@ class ArticleController extends Controller
      */
     public function index(): JsonResponse
     {
+        if (!Auth::user()->hasPermissionTo('read-article', 'api')) {
+            return $this->basicResponse
+                ->setStatusCode(403)
+                ->setMessage('You are not allowed to read article')
+                ->send();
+        }
+
         $articles = Article::paginate(10);
 
         return $this->basicResponse
@@ -54,6 +61,13 @@ class ArticleController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (!Auth::user()->hasPermissionTo('create-article', 'api')) {
+            return $this->basicResponse
+                ->setStatusCode(403)
+                ->setMessage('You are not allowed to create article')
+                ->send();
+        }
+
         $data = (object)$request->only(['title', 'content', 'published_at']);
 
         $article = new Article();
@@ -92,6 +106,13 @@ class ArticleController extends Controller
      */
     public function show($id): JsonResponse
     {
+        if (!Auth::user()->hasPermissionTo('read-article', 'api')) {
+            return $this->basicResponse
+                ->setStatusCode(403)
+                ->setMessage('You are not allowed to read article')
+                ->send();
+        }
+
         $article = $this->findArticleById($id);
 
         return $this->basicResponse
@@ -110,6 +131,13 @@ class ArticleController extends Controller
      */
     public function update($id, Request $request): JsonResponse
     {
+        if (!Auth::user()->hasPermissionTo('update-article', 'api')) {
+            return $this->basicResponse
+                ->setStatusCode(403)
+                ->setMessage('You are not allowed to update article')
+                ->send();
+        }
+
         $data = (object)$request->only(['title', 'content', 'published_at']);
 
         $article = $this->findArticleById($id);
@@ -133,6 +161,13 @@ class ArticleController extends Controller
      */
     public function destroy($id): JsonResponse
     {
+        if (!Auth::user()->hasPermissionTo('delete-article', 'api')) {
+            return $this->basicResponse
+                ->setStatusCode(403)
+                ->setMessage('You are not allowed to delete article')
+                ->send();
+        }
+
         $article = $this->findArticleById($id);
 
         $article->delete();
