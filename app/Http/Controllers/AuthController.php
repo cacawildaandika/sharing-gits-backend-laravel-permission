@@ -18,10 +18,17 @@ class AuthController extends Controller
 
     public function user(): JsonResponse
     {
+        $user = Auth::user();
         return $this->basicResponse
             ->setStatusCode(200)
             ->setMessage('Success get user')
-            ->setData(Auth::user())
+            ->setData([
+                'roles' => $user->getRoleNames(),
+                'permission_direct' => $user->getDirectPermissions(),
+                'permission_role' => $user->getPermissionsViaRoles(),
+                'permissions' => $user->getAllPermissions(),
+                'user' => $user,
+            ])
             ->send();
     }
 
