@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\BasicResponse;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,24 +35,34 @@ class AuthController extends Controller
 
     public function login(Request $request): JsonResponse
     {
-        $credentials = $request->only(['email', 'password']);
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken($user->id)->accessToken;
-
-            return $this->basicResponse
+        $user = User::find(3);
+        $token = $user->createToken($user->id)->accessToken;
+        return $this->basicResponse
                 ->setStatusCode(200)
                 ->setMessage('Login success')
                 ->setData([
                     'user' => $user,
                     'token' => $token
                 ])->send();
-        }
 
-        return $this->basicResponse
-            ->setStatusCode(401)
-            ->setMessage('Email or password not match')
-            ->send();
+//        $credentials = $request->only(['email', 'password']);
+
+//        if (Auth::check($credentials)) {
+//            $user = Auth::user();
+//            $token = $user->createToken($user->id)->accessToken;
+//
+//            return $this->basicResponse
+//                ->setStatusCode(200)
+//                ->setMessage('Login success')
+//                ->setData([
+//                    'user' => $user,
+//                    'token' => $token
+//                ])->send();
+//        }
+//
+//        return $this->basicResponse
+//            ->setStatusCode(401)
+//            ->setMessage('Email or password not match')
+//            ->send();
     }
 }
